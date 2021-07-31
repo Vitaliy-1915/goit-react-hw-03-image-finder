@@ -47,8 +47,10 @@ class Wrapper extends Component {
     this.setState({ imageName });
   };
 
-  onLoadMore = (e) => {
-    this.setState((prevState) => ({ page: (prevState.page = 1) }));
+  onLoadMore = (onClick) => {
+    console.log(onClick);
+
+    console.log(this.setState((prevState) => ({ page: prevState.page + 1 })));
   };
 
   render() {
