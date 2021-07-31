@@ -1,9 +1,11 @@
 import React, { Component } from "react";
+//  import { toast } from 'react-toastify';
 import { Header, Form, Button, Span, Input } from "./Searchbar.styles";
 
 class Searchbar extends Component {
   state = {
     imageName: "",
+    error: null,
   };
 
   handleSubmit = (event) => {
@@ -11,6 +13,7 @@ class Searchbar extends Component {
 
     if (this.state.imageName.trim() === "") {
       alert("введи имя");
+      // toast.error("введи имя");
       return;
     }
 

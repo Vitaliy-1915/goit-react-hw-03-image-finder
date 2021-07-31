@@ -1,8 +1,12 @@
 import React from "react";
 import { ButtonLoad } from "./Button.styles";
 
-function Button() {
-  return <ButtonLoad type="button">Load more</ButtonLoad>;
+function Button({ onClick }) {
+  return (
+    <ButtonLoad type="button" onClick={onClick}>
+      Load more
+    </ButtonLoad>
+  );
 }
 
 export default Button;

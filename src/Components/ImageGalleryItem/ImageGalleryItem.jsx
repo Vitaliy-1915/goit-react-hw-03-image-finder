@@ -1,10 +1,10 @@
 import React from "react";
 import { ImageGalleryItem, Image } from "./ImageGalleryItem.styles";
 
-function ImageGalleryItems() {
+function ImageGalleryItems({ smallImage, tag }) {
   return (
     <ImageGalleryItem>
-      <Image src="" alt="" />
+      <Image src={smallImage} alt={tag} />
     </ImageGalleryItem>
   );
 }
