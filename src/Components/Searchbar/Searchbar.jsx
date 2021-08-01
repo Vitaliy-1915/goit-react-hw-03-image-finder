@@ -12,7 +12,7 @@ class Searchbar extends Component {
     event.preventDefault();
 
     if (this.state.imageName.trim() === "") {
-      alert("введи имя");
+      alert("Enter images and photos");
       // toast.error("введи имя");
       return;
     }

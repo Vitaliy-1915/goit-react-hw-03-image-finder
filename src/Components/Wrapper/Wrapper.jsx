@@ -139,7 +139,7 @@ class Wrapper extends Component {
           )}
           {/* <ToastContainer
                 position="top-center"
-                autoClose={1000}
+                autoClose={100}
                 closeOnClick={false}
               /> */}
         </WrapperContainer>
