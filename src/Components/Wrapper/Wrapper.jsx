@@ -3,6 +3,7 @@ import Loader from "react-loader-spinner";
 import Searchbar from "../Searchbar/Searchbar";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import Button from "../Button/Button";
+import Modal from "../Modal/Modal";
 // import { ToastContainer } from 'react-toastify';
 import { WrapperContainer } from "./Wrapper.styles";
 
@@ -11,8 +12,8 @@ class Wrapper extends Component {
     imageName: "",
     page: 1,
     images: [],
-    // modalIsOpen: false,
-    // selectedImage: null,
+    modalIsOpen: false,
+    selectedImage: null,
     status: "idle",
     error: null,
   };
@@ -77,8 +78,17 @@ class Wrapper extends Component {
     this.setState((prevState) => ({ page: prevState.page + 1 }));
   };
 
+  openModal = (src, alt) => {
+    this.setState({
+      modalIsOpen: true,
+      selectedImage: { src, alt },
+    });
+  };
+
+  closeModal = () => this.setState({ modalIsOpen: false });
+
   render() {
-    const { images, error, status } = this.state;
+    const { images, error, status, selectedImage, modalIsOpen } = this.state;
 
     if (status === "idle") {
       return (
@@ -97,7 +107,7 @@ class Wrapper extends Component {
           <ImageGallery images={images} />
           {images.length > 0 && <Button onClick={this.onLoadMore} />}
           <Loader
-            type="Puff"
+            type="Watch"
             color="#00BFFF"
             height={300}
             width={300}
@@ -121,9 +131,12 @@ class Wrapper extends Component {
       return (
         <WrapperContainer>
           <Searchbar onSubmit={this.formSubmit} />
-          <ImageGallery images={images} />
+          <ImageGallery images={images} openModal={this.openModal} />
           {images.length > 0 && <Button onClick={this.onLoadMore} />}
           {images.length < 1 && <h2>invalid name!!!</h2>}
+          {modalIsOpen && (
+            <Modal image={selectedImage} onClose={this.closeModal} />
+          )}
           {/* <ToastContainer
                 position="top-center"
                 autoClose={1000}
