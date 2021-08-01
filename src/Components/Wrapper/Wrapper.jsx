@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Loader from "react-loader-spinner";
 import Searchbar from "../Searchbar/Searchbar";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import Button from "../Button/Button";
@@ -17,8 +18,11 @@ class Wrapper extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.imageName !== this.state.imageName) {
-      this.setState({ status: "pending", images: [] });
+    if (
+      prevState.imageName !== this.state.imageName ||
+      prevState.page !== this.state.page
+    ) {
+      this.setState({ status: "pending" });
 
       fetch(
         `https://pixabay.com/api/?q=${this.state.imageName}&page=${this.state.page}&key=21859800-af94843fb327cc57780ddd667&image_type=photo&orientation=horizontal&per_page=12`
@@ -41,16 +45,36 @@ class Wrapper extends Component {
         )
         .catch((error) => this.setState({ error, status: "rejected" }));
     }
+
+    if (prevState.images !== this.state.images) {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+
+    if (prevState.imageName !== this.state.imageName) {
+      this.resetState();
+    }
   }
+
+  resetState = () => {
+    this.setState({
+      // imageName: "",
+      page: 1,
+      images: [],
+      // modalIsOpen: false,
+      // selectedImage: null,
+      status: "idle",
+    });
+  };
 
   formSubmit = (imageName) => {
     this.setState({ imageName });
   };
 
-  onLoadMore = (onClick) => {
-    console.log(onClick);
-
-    console.log(this.setState((prevState) => ({ page: prevState.page + 1 })));
+  onLoadMore = () => {
+    this.setState((prevState) => ({ page: prevState.page + 1 }));
   };
 
   render() {
@@ -71,7 +95,14 @@ class Wrapper extends Component {
         <WrapperContainer>
           <Searchbar onSubmit={this.formSubmit} />
           <ImageGallery images={images} />
-          <h1>ЗАГРУЗКА</h1>
+          {images.length > 0 && <Button onClick={this.onLoadMore} />}
+          <Loader
+            type="Puff"
+            color="#00BFFF"
+            height={300}
+            width={300}
+            timeout={3000}
+          />
         </WrapperContainer>
       );
     }
@@ -91,7 +122,8 @@ class Wrapper extends Component {
         <WrapperContainer>
           <Searchbar onSubmit={this.formSubmit} />
           <ImageGallery images={images} />
-          <Button onClick={this.onLoadMore} />
+          {images.length > 0 && <Button onClick={this.onLoadMore} />}
+          {images.length < 1 && <h2>invalid name!!!</h2>}
           {/* <ToastContainer
                 position="top-center"
                 autoClose={1000}
