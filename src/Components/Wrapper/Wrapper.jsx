@@ -46,6 +46,7 @@ class Wrapper extends Component {
     //         status: "resolved",
     //       }))
     //     )
+
     //     .catch((error) => this.setState({ error, status: "rejected" }))
     // };
 
