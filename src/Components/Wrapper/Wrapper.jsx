@@ -4,6 +4,7 @@ import Searchbar from "../Searchbar/Searchbar";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import Button from "../Button/Button";
 import Modal from "../Modal/Modal";
+// import FetchApi from '../FetchApi/FetchImages';
 // import { ToastContainer } from 'react-toastify';
 import { WrapperContainer } from "./Wrapper.styles";
 
@@ -19,14 +20,40 @@ class Wrapper extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.imageName !== this.state.imageName ||
-      prevState.page !== this.state.page
-    ) {
+    const { imageName, page, images } = this.state;
+
+    //   if (prevState.imageName !== this.state.imageName) {
+    //     this.setState({ status: "pending", page: 1, images: [] });
+
+    //   FetchApi.FetchImages(imageName, page)
+    //     .then((data) => data.hits)
+    //     .then((image) =>
+    //       this.setState((prevState) => ({
+    //         images: [...prevState.images, ...image],
+    //         status: "resolved",
+    //       }))
+    //     )
+    //     .catch((error) => this.setState({ error, status: "rejected" }))
+    //   };
+
+    //   if (prevState.page !== this.state.page) {
+
+    //   FetchApi.FetchImages(imageName, page)
+    //     .then((data) => data.hits)
+    //     .then((image) =>
+    //       this.setState((prevState) => ({
+    //         images: [...prevState.images, ...image],
+    //         status: "resolved",
+    //       }))
+    //     )
+    //     .catch((error) => this.setState({ error, status: "rejected" }))
+    // };
+
+    if (prevState.imageName !== imageName || prevState.page !== page) {
       this.setState({ status: "pending" });
 
       fetch(
-        `https://pixabay.com/api/?q=${this.state.imageName}&page=${this.state.page}&key=21859800-af94843fb327cc57780ddd667&image_type=photo&orientation=horizontal&per_page=12`
+        `https://pixabay.com/api/?q=${imageName}&page=${page}&key=21859800-af94843fb327cc57780ddd667&image_type=photo&orientation=horizontal&per_page=12`
       )
         .then((response) => {
           if (response.ok) {
@@ -34,7 +61,7 @@ class Wrapper extends Component {
           }
 
           return Promise.reject(
-            new Error(`There is no images with name ${this.state.imageName}`)
+            new Error(`There is no images with name ${imageName}`)
           );
         })
         .then((data) => data.hits)
@@ -47,14 +74,14 @@ class Wrapper extends Component {
         .catch((error) => this.setState({ error, status: "rejected" }));
     }
 
-    if (prevState.images !== this.state.images) {
+    if (prevState.images !== images) {
       window.scrollTo({
         top: document.body.scrollHeight,
         behavior: "smooth",
       });
     }
 
-    if (prevState.imageName !== this.state.imageName) {
+    if (prevState.imageName !== imageName) {
       this.resetState();
     }
   }
