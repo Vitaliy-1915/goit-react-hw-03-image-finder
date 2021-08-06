@@ -22,39 +22,34 @@ class Wrapper extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { imageName, page, images } = this.state;
 
-    if (
-      prevState.imageName !== this.state.imageName ??
-      prevState.page !== this.state.page
-    ) {
-      this.setState({ status: "pending", images: [] });
-      console.log(prevState.page !== this.state.page);
-      console.log(prevState.page);
-      console.log(this.state.page);
-      FetchApi.FetchImages(imageName, page)
-        .then((data) => data.hits)
-        .then((image) =>
-          this.setState({
-            images: image,
-            status: "resolved",
-          })
-        )
-        .catch((error) => this.setState({ error, status: "rejected" }));
-    }
+    // if (
+    //   prevState.imageName !== this.state.imageName
+    // ) {
+    //   this.setState({ status: "pending",page: 1, images: [] });
+    //   FetchApi.FetchImages(imageName, page)
+    //     .then((data) => data.hits)
+    //     .then((image) =>
+    //       this.setState({
+    //         images: image,
+    //         status: "resolved",
+    //       })
+    //     )
+    //     .catch((error) => this.setState({ error, status: "rejected" }));
+    //   return
+    // }
 
     if (prevState.page !== this.state.page) {
-      console.log(prevState.page !== this.state.page);
-      console.log(prevState.page);
-      console.log(this.state.page);
-      FetchApi.FetchImages(imageName, page)
-        .then((data) => data.hits)
-        .then((image) =>
-          this.setState((prevState) => ({
-            images: [...prevState.images, ...image],
-            status: "resolved",
-          }))
-        )
+      this.getImages();
+      // FetchApi.FetchImages(imageName, page)
+      //   .then((data) => data.hits)
+      //   .then((image) =>
+      //     this.setState((prevState) => ({
+      //       images: [...prevState.images, ...image],
+      //       status: "resolved",
+      //     }))
+      //   )
 
-        .catch((error) => this.setState({ error, status: "rejected" }));
+      // .catch((error) => this.setState({ error, status: "rejected" }));
     }
 
     // if (prevState.imageName !== imageName || prevState.page !== page) {
@@ -89,10 +84,23 @@ class Wrapper extends Component {
       });
     }
 
-    if (prevState.imageName !== imageName) {
-      this.resetState();
-    }
+    // if (prevState.imageName !== imageName) {
+    //   this.resetState();
+    // }
   }
+
+  getImages = () => {
+    const { imageName, page, images } = this.state;
+    FetchApi.FetchImages(imageName, page)
+      .then((data) => data.hits)
+      .then((image) =>
+        this.setState((prevState) => ({
+          images: [...prevState.images, ...image],
+          status: "resolved",
+        }))
+      )
+      .catch((error) => this.setState({ error, status: "rejected" }));
+  };
 
   resetState = () => {
     this.setState({
@@ -106,7 +114,9 @@ class Wrapper extends Component {
   };
 
   formSubmit = (imageName) => {
+    this.resetState();
     this.setState({ imageName });
+    this.getImages();
   };
 
   onLoadMore = () => {
