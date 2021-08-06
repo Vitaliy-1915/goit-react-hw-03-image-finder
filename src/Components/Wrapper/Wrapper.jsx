@@ -20,62 +20,17 @@ class Wrapper extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    const { imageName, page, images } = this.state;
+    const { images } = this.state;
 
-    // if (
-    //   prevState.imageName !== this.state.imageName
-    // ) {
-    //   this.setState({ status: "pending",page: 1, images: [] });
-    //   FetchApi.FetchImages(imageName, page)
-    //     .then((data) => data.hits)
-    //     .then((image) =>
-    //       this.setState({
-    //         images: image,
-    //         status: "resolved",
-    //       })
-    //     )
-    //     .catch((error) => this.setState({ error, status: "rejected" }));
-    //   return
-    // }
+    if (prevState.imageName !== this.state.imageName) {
+      this.setState({ status: "pending", page: 1, images: [] });
+      this.getImages();
+      return;
+    }
 
     if (prevState.page !== this.state.page) {
       this.getImages();
-      // FetchApi.FetchImages(imageName, page)
-      //   .then((data) => data.hits)
-      //   .then((image) =>
-      //     this.setState((prevState) => ({
-      //       images: [...prevState.images, ...image],
-      //       status: "resolved",
-      //     }))
-      //   )
-
-      // .catch((error) => this.setState({ error, status: "rejected" }));
     }
-
-    // if (prevState.imageName !== imageName || prevState.page !== page) {
-    //   this.setState({ status: "pending" });
-
-    //   fetch(
-    //     `https://pixabay.com/api/?q=${imageName}&page=${page}&key=21859800-af94843fb327cc57780ddd667&image_type=photo&orientation=horizontal&per_page=12`
-    //   )
-    //     .then((response) => {
-    //       if (response.ok) {
-    //         return response.json();
-    //       }
-
-    //       return Promise.reject(
-    //         new Error(`There is no images with name ${imageName}`)
-    //       );
-    //     })
-    //     .then((data) => data.hits)
-    //     .then((image) =>
-    //       this.setState((prevState) => ({
-    //         images: [...prevState.images, ...image],
-    //         status: "resolved",
-    //       }))
-    //     )
-    //     .catch((error) => this.setState({ error, status: "rejected" }));
-    // }
 
     if (prevState.images !== images) {
       window.scrollTo({
@@ -83,14 +38,10 @@ class Wrapper extends Component {
         behavior: "smooth",
       });
     }
-
-    // if (prevState.imageName !== imageName) {
-    //   this.resetState();
-    // }
   }
 
   getImages = () => {
-    const { imageName, page, images } = this.state;
+    const { imageName, page } = this.state;
     FetchApi.FetchImages(imageName, page)
       .then((data) => data.hits)
       .then((image) =>
@@ -116,7 +67,6 @@ class Wrapper extends Component {
   formSubmit = (imageName) => {
     this.resetState();
     this.setState({ imageName });
-    this.getImages();
   };
 
   onLoadMore = () => {
