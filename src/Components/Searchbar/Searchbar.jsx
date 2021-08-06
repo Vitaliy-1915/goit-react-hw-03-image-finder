@@ -41,7 +41,7 @@ class Searchbar extends Component {
             name="imageName"
             value={this.state.imageName}
             onChange={this.handleFormChange}
-            // autocomplete="off"
+            autocomplete="off"
             // autofocus
             placeholder="Search images and photos"
           />
