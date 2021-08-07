@@ -85,22 +85,17 @@ class Wrapper extends Component {
   render() {
     const { images, error, status, selectedImage, modalIsOpen } = this.state;
 
-    if (status === "idle") {
-      return (
-        <WrapperContainer>
-          <Searchbar onSubmit={this.formSubmit} />
-          <ImageGallery images={images} />
-          <h1>Start your search </h1>
-        </WrapperContainer>
-      );
-    }
+    return (
+      <WrapperContainer>
+        <Searchbar onSubmit={this.formSubmit} />
 
-    if (status === "pending") {
-      return (
-        <WrapperContainer>
-          <Searchbar onSubmit={this.formSubmit} />
-          <ImageGallery images={images} />
-          {images.length > 0 && <Button onClick={this.onLoadMore} />}
+        {modalIsOpen && (
+          <Modal image={selectedImage} onClose={this.closeModal} />
+        )}
+
+        {status === "idle" && <h1>Start your search </h1>}
+
+        {status === "pending" && (
           <Loader
             type="Watch"
             color="#00BFFF"
@@ -108,38 +103,78 @@ class Wrapper extends Component {
             width={300}
             timeout={3000}
           />
-        </WrapperContainer>
-      );
-    }
+        )}
 
-    if (status === "rejected") {
-      return (
-        <WrapperContainer>
-          <Searchbar onSubmit={this.formSubmit} />
-          <ImageGallery images={images} />
-          <h1>{error.message}</h1>
-        </WrapperContainer>
-      );
-    }
+        {status === "rejected" && <h1>{error.message}</h1>}
 
-    if (status === "resolved") {
-      return (
-        <WrapperContainer>
-          <Searchbar onSubmit={this.formSubmit} />
-          <ImageGallery images={images} openModal={this.openModal} />
-          {images.length > 0 && <Button onClick={this.onLoadMore} />}
-          {images.length < 1 && <h2>invalid name!!!</h2>}
-          {modalIsOpen && (
-            <Modal image={selectedImage} onClose={this.closeModal} />
-          )}
-          {/* <ToastContainer
-                position="top-center"
-                autoClose={100}
-                closeOnClick={false}
-              /> */}
-        </WrapperContainer>
-      );
-    }
+        {
+          status === "resolved" && (
+            <ImageGallery images={images} openModal={this.openModal} />
+          )
+          // <ToastContainer position="top-center" autoClose={100} closeOnClick={false}/>
+        }
+
+        {status === "resolved" && images.length < 1 && <h2>invalid name!!!</h2>}
+
+        {images.length > 0 && <Button onClick={this.onLoadMore} />}
+      </WrapperContainer>
+    );
+
+    // if (status === "idle") {
+    //   return (
+    //     <WrapperContainer>
+    //       <Searchbar onSubmit={this.formSubmit} />
+    //       {/* <ImageGallery images={images} />  */}
+    //       <h1>Start your search </h1>
+    //     </WrapperContainer>
+    //   );
+    // }
+
+    // if (status === "pending") {
+    //   return (
+    //     <WrapperContainer>
+    //       <Searchbar onSubmit={this.formSubmit} />
+    //       {/* <ImageGallery images={images} /> */}
+    //       {/* {images.length > 0 && <Button onClick={this.onLoadMore} />} */}
+    //       <Loader
+    //         type="Watch"
+    //         color="#00BFFF"
+    //         height={300}
+    //         width={300}
+    //         timeout={3000}
+    //       />
+    //     </WrapperContainer>
+    //   );
+    // }
+
+    // if (status === "rejected") {
+    //   return (
+    //     <WrapperContainer>
+    //       <Searchbar onSubmit={this.formSubmit} />
+    //       {/* <ImageGallery images={images} /> */}
+    //       <h1>{error.message}</h1>
+    //     </WrapperContainer>
+    //   );
+    // }
+
+    // if (status === "resolved") {
+    //   return (
+    //     <WrapperContainer>
+    //       <Searchbar onSubmit={this.formSubmit} />
+    //       <ImageGallery images={images} openModal={this.openModal} />
+    //       {images.length > 0 && <Button onClick={this.onLoadMore} />}
+    //       {images.length < 1 && <h2>invalid name!!!</h2>}
+    //       {modalIsOpen && (
+    //         <Modal image={selectedImage} onClose={this.closeModal} />
+    //       )}
+    //       {/* <ToastContainer
+    //             position="top-center"
+    //             autoClose={100}
+    //             closeOnClick={false}
+    //           /> */}
+    //     </WrapperContainer>
+    //   );
+    // }
   }
 }
 
