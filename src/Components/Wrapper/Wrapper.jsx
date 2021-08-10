@@ -29,6 +29,7 @@ class Wrapper extends Component {
     }
 
     if (prevState.page !== this.state.page) {
+      this.setState({ status: "pending" });
       this.getImages();
     }
 
